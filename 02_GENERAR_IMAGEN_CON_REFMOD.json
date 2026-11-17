@@ -1,0 +1,466 @@
+{
+  "id": "qwen21-refmod-v3-text2image",
+  "revision": 0,
+  "last_node_id": 7,
+  "last_link_id": 8,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "UNETLoader",
+      "pos": [
+        60,
+        60
+      ],
+      "size": [
+        470,
+        105
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            2
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "UNETLoader"
+      },
+      "title": "01 | QWEN IMAGE 2.1 MODEL",
+      "widgets_values": [
+        "qwen_image_2.1_int8_convrot.safetensors",
+        "default"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "CLIPLoader",
+      "pos": [
+        60,
+        240
+      ],
+      "size": [
+        470,
+        105
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            1
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPLoader"
+      },
+      "title": "02 | QWEN3 VL ENCODER",
+      "widgets_values": [
+        "qwen3vl_8b_int8_convrot.safetensors",
+        "qwen_image",
+        "default"
+      ]
+    },
+    {
+      "id": 3,
+      "type": "VAELoader",
+      "pos": [
+        60,
+        415
+      ],
+      "size": [
+        470,
+        75
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            7
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAELoader"
+      },
+      "title": "03 | QWEN 2.1 VAE",
+      "widgets_values": [
+        "qwen_image_2.1_vae_bf16.safetensors"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "Qwen21RefModTextToImageV3",
+      "pos": [
+        650,
+        60
+      ],
+      "size": [
+        730,
+        750
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 1
+        },
+        {
+          "name": "profile_filename",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "profile_filename"
+          }
+        },
+        {
+          "name": "prompt",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "prompt"
+          }
+        },
+        {
+          "name": "negative_prompt",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "negative_prompt"
+          }
+        },
+        {
+          "name": "views_to_use",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "views_to_use"
+          }
+        },
+        {
+          "name": "strength",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "strength"
+          }
+        },
+        {
+          "name": "copies",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "copies"
+          }
+        },
+        {
+          "name": "retention",
+          "type": "FLOAT",
+          "widget": {
+            "name": "retention"
+          },
+          "link": null
+        },
+        {
+          "name": "width",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "width"
+          }
+        },
+        {
+          "name": "height",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "height"
+          }
+        },
+        {
+          "name": "identity_instruction",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "identity_instruction"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "links": [
+            3
+          ]
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "links": [
+            4
+          ]
+        },
+        {
+          "name": "latent",
+          "type": "LATENT",
+          "links": [
+            5
+          ]
+        },
+        {
+          "name": "profile_details",
+          "type": "STRING",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Qwen21RefModTextToImageV3"
+      },
+      "title": "GENERAR QWEN 2.1 | REFMOD FUERZA 0–1 + COPIAS 1–10",
+      "widgets_values": [
+        "Personaje_01.safetensors",
+        "A cinematic photorealistic full body photograph of the SAME person, walking through an elegant garden at golden hour, detailed natural clothing, realistic skin, 35mm lens.",
+        "different identity, duplicate person, extra limbs, text, watermark",
+        8,
+        1.0,
+        1,
+        1.0,
+        1024,
+        1024,
+        "All references depict ONE SAME ADULT person from multiple angles. Preserve distinct facial geometry, visible features, hairstyle, skin tone and physique. New scene must follow the written prompt."
+      ]
+    },
+    {
+      "id": 5,
+      "type": "KSampler",
+      "pos": [
+        1550,
+        60
+      ],
+      "size": [
+        380,
+        440
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 2
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 3
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 4
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 5
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            6
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "title": "05 | MUESTREO QWEN 2.1",
+      "widgets_values": [
+        38114770489275,
+        "fixed",
+        35,
+        5,
+        "er_sde",
+        "simple",
+        1
+      ]
+    },
+    {
+      "id": 6,
+      "type": "VAEDecode",
+      "pos": [
+        2000,
+        60
+      ],
+      "size": [
+        320,
+        90
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 6
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 7
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            8
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      },
+      "title": "06 | DECODIFICAR IMAGEN"
+    },
+    {
+      "id": 7,
+      "type": "SaveImage",
+      "pos": [
+        2390,
+        60
+      ],
+      "size": [
+        500,
+        560
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 8
+        }
+      ],
+      "outputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SaveImage"
+      },
+      "title": "07 | GUARDAR FOTO",
+      "widgets_values": [
+        "QWEN21_REFMOD_V3/Image"
+      ]
+    }
+  ],
+  "links": [
+    [
+      1,
+      2,
+      0,
+      4,
+      0,
+      "CLIP"
+    ],
+    [
+      2,
+      1,
+      0,
+      5,
+      0,
+      "MODEL"
+    ],
+    [
+      3,
+      4,
+      0,
+      5,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      4,
+      4,
+      1,
+      5,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      5,
+      4,
+      2,
+      5,
+      3,
+      "LATENT"
+    ],
+    [
+      6,
+      5,
+      0,
+      6,
+      0,
+      "LATENT"
+    ],
+    [
+      7,
+      3,
+      0,
+      6,
+      1,
+      "VAE"
+    ],
+    [
+      8,
+      6,
+      0,
+      7,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.75,
+      "offset": [
+        0,
+        0
+      ]
+    }
+  },
+  "version": 0.4
+}
